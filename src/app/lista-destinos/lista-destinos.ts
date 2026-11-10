@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
+import { NgFor } from '@angular/common';
 import { DestinoViaje as DestinoViajeComponent } from '../destino-viaje/destino-viaje';
 import { DestinoViaje } from '../models/destino-viaje.models';
 
 @Component({
   selector: 'app-lista-destinos',
-  imports: [DestinoViajeComponent],
+  imports: [DestinoViajeComponent, NgFor],
   templateUrl: './lista-destinos.html',
   styleUrl: './lista-destinos.css'
 })
