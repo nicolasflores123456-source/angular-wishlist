@@ -14,4 +14,10 @@ export class ListaDestinos {
     'Lima',
     'Barranquilla'
   ];
+
+  agregar(titulo: string) {
+    if (titulo.trim() !== '') {
+      this.destinos.push(titulo.trim());
+    }
+  }
 }

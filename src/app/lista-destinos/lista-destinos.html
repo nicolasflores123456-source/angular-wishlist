@@ -1,3 +1,19 @@
+<div class="mb-3">
+  <input
+    type="text"
+    class="form-control"
+    placeholder="Escribe un destino turístico"
+    #titulo
+  >
+
+  <button
+    class="btn btn-primary mt-2"
+    (click)="agregar(titulo.value)"
+  >
+    Agregar destino
+  </button>
+</div>
+
 <ul class="list-group">
   @for (destino of destinos; track destino) {
     <li class="list-group-item">
