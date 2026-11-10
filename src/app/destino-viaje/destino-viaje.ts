@@ -7,5 +7,9 @@ import { Component, Input } from '@angular/core';
   styleUrl: './destino-viaje.css'
 })
 export class DestinoViaje {
+
   @Input() nombre: string = '';
+
+  @Input() imagenUrl: string = '';
+
 }

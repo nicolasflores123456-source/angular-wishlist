@@ -1,23 +1,41 @@
 <div class="mb-3">
+
   <input
     type="text"
-    class="form-control"
-    placeholder="Escribe un destino turístico"
-    #titulo
+    class="form-control mb-2"
+    placeholder="Nombre del destino turístico"
+    #nombre
+  >
+
+  <input
+    type="text"
+    class="form-control mb-2"
+    placeholder="URL de la imagen"
+    #url
   >
 
   <button
     class="btn btn-primary mt-2"
-    (click)="agregar(titulo.value)"
+    (click)="agregar(nombre.value, url.value)"
   >
     Agregar destino
   </button>
+
 </div>
 
-<ul class="list-group">
+<div class="row">
+
   @for (destino of destinos; track destino) {
-    <li class="list-group-item">
-      <app-destino-viaje [nombre]="destino"></app-destino-viaje>
-    </li>
+
+    <div class="col-md-4 mb-3">
+
+      <app-destino-viaje
+        [nombre]="destino.nombre"
+        [imagenUrl]="destino.imagenUrl">
+      </app-destino-viaje>
+
+    </div>
+
   }
-</ul>
+
+</div>
