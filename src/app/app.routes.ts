@@ -13,6 +13,9 @@ import { VuelosMain } from './components/vuelos/vuelos-main/vuelos-main';
 import { VuelosMasInfo } from './components/vuelos/vuelos-mas-info/vuelos-mas-info';
 import { VuelosDetalle } from './components/vuelos/vuelos-detalle/vuelos-detalle';
 
+// Rutas independientes de Reservas
+import { RESERVAS_ROUTES } from './reservas/reservas.routes';
+
 export const routes: Routes = [
 
   {
@@ -49,31 +52,33 @@ export const routes: Routes = [
     canActivate: [authGuard],
 
     children: [
-
       {
         path: '',
         redirectTo: 'main',
         pathMatch: 'full'
       },
-
       {
         path: 'main',
         component: VuelosMain
       },
-
       {
         path: 'mas-info',
         component: VuelosMasInfo
       },
-
       {
         path: 'detalle/:id',
         component: VuelosDetalle
       }
-
     ]
   },
 
+  // RUTAS INDEPENDIENTES DE RESERVAS
+  {
+    path: 'reservas',
+    children: RESERVAS_ROUTES
+  },
+
+  // RUTA COMODÍN
   {
     path: '**',
     redirectTo: 'home'
