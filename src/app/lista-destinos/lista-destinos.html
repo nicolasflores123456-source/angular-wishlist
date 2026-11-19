@@ -6,9 +6,12 @@
 <!-- Lista de destinos turísticos -->
 <ul class="row list-unstyled mt-4">
 
+  <!-- Lista de destinos turísticos -->
+<ul class="row list-unstyled mt-4 g-4">
+
   <li
     *ngFor="let destino of destinos; let i = index"
-    class="col-md-4 mb-3"
+    class="col-md-4 d-flex flex-column"
   >
 
     <app-destino-viaje
@@ -19,17 +22,22 @@
       [posicion]="i + 1"
       [esFavorito]="destino.nombre === destinoFavorito"
       (destinoSeleccionado)="seleccionarDestino($event)">
-      
     </app-destino-viaje>
 
-    <button
-      type="button"
-      class="btn btn-danger btn-sm mt-2"
-      (click)="eliminarDestino(destino.nombre)">
-      Eliminar
-    </button>
+    <div class="text-center mt-3 mb-3">
+
+      <button
+        type="button"
+        class="btn btn-danger btn-sm"
+        (click)="eliminarDestino(destino.nombre)">
+        Eliminar
+      </button>
+
+    </div>
 
   </li>
+
+</ul>
 
 </ul>
 
@@ -48,19 +56,18 @@
       {{ nombre }}
     </li>
     
+    </ul>
+
   <div class="text-center my-4">
 
     <button
       type="button"
       class="btn btn-warning"
       (click)="reiniciarVotos()">
-
       Reiniciar todos los votos
-
     </button>
 
   </div>
-  </ul>
 
 </div>
 

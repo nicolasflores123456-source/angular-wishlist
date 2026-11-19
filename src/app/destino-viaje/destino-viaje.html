@@ -48,14 +48,14 @@
     </ul>
 
     <!-- Sistema de votación -->
-    <div class="d-flex align-items-center gap-3 mt-3 mb-3">
+    <div class="d-flex justify-content-center align-items-center gap-3 mt-3 mb-3">
 
       <button
         type="button"
         class="btn btn-outline-success btn-sm"
         (click)="votarPositivo()">
 
-        <span class="material-icons">
+        <span class="material-icons d-block">
           thumb_up
         </span>
 
@@ -78,18 +78,22 @@
 
     </div>
 
-    <button
-      type="button"
-      class="btn btn-primary mt-3"
-      (click)="seleccionarDestino()">
-      Seleccionar
-    </button>
+    <div class="d-flex justify-content-center align-items-center gap-3 mt-4 mb-3">
 
-    <a
-      [routerLink]="['/destino']"
-      class="btn btn-outline-primary mt-2">
-      Ver detalle
-    </a>
+  <button
+    type="button"
+    class="btn btn-primary"
+    (click)="seleccionarDestino()">
+    Seleccionar
+  </button>
+
+  <a
+    [routerLink]="['/destino']"
+    class="btn btn-outline-primary">
+    Ver detalle
+  </a>
+
+</div>
 
   </div>
 
