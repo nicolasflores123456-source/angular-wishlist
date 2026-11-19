@@ -1,6 +1,11 @@
 import { Routes } from '@angular/router';
+
 import { ListaDestinos } from './lista-destinos/lista-destinos';
 import { DestinoDetalle } from './destino-detalle/destino-detalle';
+
+import { Login } from './login/login';
+import { Protected } from './protected/protected';
+import { authGuard } from './guards/auth-guard';
 
 export const routes: Routes = [
   {
@@ -15,5 +20,18 @@ export const routes: Routes = [
   {
     path: 'destino',
     component: DestinoDetalle
+  },
+  {
+    path: 'login',
+    component: Login
+  },
+  {
+    path: 'protected',
+    component: Protected,
+    canActivate: [authGuard]
+  },
+  {
+    path: '**',
+    redirectTo: 'home'
   }
 ];

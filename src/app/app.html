@@ -2,16 +2,49 @@
 
   <header class="mb-4">
     <h1 class="text-center">Angular Wish List</h1>
-    <h2 class="text-center">Ruteo Simple</h2>
+    <h2 class="text-center">Ruteo Avanzado</h2>
 
     <nav class="nav nav-pills justify-content-center mt-3">
-      <a class="nav-link" [routerLink]="['/home']">
+
+      <a
+        class="nav-link"
+        routerLink="/home"
+        routerLinkActive="active">
         Home
       </a>
 
-      <a class="nav-link" [routerLink]="['/destino']">
+      <a
+        class="nav-link"
+        routerLink="/destino"
+        routerLinkActive="active">
         Destino
       </a>
+
+      @if (!auth.isLoggedIn()) {
+        <a
+          class="nav-link"
+          routerLink="/login"
+          routerLinkActive="active">
+          Login
+        </a>
+      }
+
+      @if (auth.isLoggedIn()) {
+        <a
+          class="nav-link"
+          routerLink="/protected"
+          routerLinkActive="active">
+          Área protegida
+        </a>
+
+        <button
+          type="button"
+          class="btn btn-outline-danger ms-3"
+          (click)="logout()">
+          Cerrar sesión
+        </button>
+      }
+
     </nav>
   </header>
 

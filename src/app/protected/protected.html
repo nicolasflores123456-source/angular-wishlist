@@ -1,0 +1,46 @@
+<div class="container mt-5">
+
+  <div class="row justify-content-center">
+
+    <div class="col-md-8">
+
+      <div class="card shadow">
+
+        <div class="card-header bg-success text-white text-center">
+          <h3>Área protegida</h3>
+        </div>
+
+        <div class="card-body text-center">
+
+          <h4>Bienvenido, {{ getUser() }}</h4>
+
+          <p class="mt-3">
+            Has iniciado sesión correctamente.
+          </p>
+
+          <div class="alert alert-info">
+            Esta página está protegida mediante
+            un AuthGuard de Angular.
+          </div>
+
+          <p>
+            Solamente los usuarios autenticados
+            pueden acceder a este contenido.
+          </p>
+
+          <button
+            type="button"
+            class="btn btn-danger mt-3"
+            (click)="logout()">
+            Cerrar sesión
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
