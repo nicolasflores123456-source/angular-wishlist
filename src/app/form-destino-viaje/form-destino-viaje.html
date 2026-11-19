@@ -1,0 +1,83 @@
+<form [formGroup]="fg" (ngSubmit)="guardar()">
+
+  <div class="mb-3">
+    <label for="nombre" class="form-label">
+      Nombre del destino turístico
+    </label>
+
+    <input
+      type="text"
+      id="nombre"
+      class="form-control"
+      placeholder="Nombre del destino turístico"
+      formControlName="nombre"
+    >
+<ul class="list-group mt-2">
+
+  <li
+    *ngFor="let resultado of searchResults"
+    class="list-group-item">
+
+    {{ resultado }}
+
+  </li>
+
+</ul>
+
+    <!-- Validación general del campo -->
+    @if (fg.controls['nombre'].hasError('invalidNombre')) {
+    <div class="text-danger mt-1">
+        Nombre inválido: debe tener al menos 5 caracteres.
+    </div>
+    }
+
+    @if (fg.controls['nombre'].hasError('minLongNombre')) {
+    <div class="text-danger mt-1">
+        El nombre debe tener al menos 3 caracteres.
+    </div>
+    }
+
+    <!-- Validación específica: required -->
+    <div
+      *ngIf="fg.controls['nombre'].hasError('required')"
+      class="text-danger mt-1">
+      Nombre requerido
+    </div>
+
+  </div>
+
+  <div class="mb-3">
+  <label for="url" class="form-label">
+    URL de la imagen
+  </label>
+
+  <input
+    type="text"
+    id="url"
+    class="form-control"
+    placeholder="URL de la imagen"
+    formControlName="url"
+  >
+
+  @if (!fg.controls['url'].valid) {
+    <div class="text-danger mt-1">
+      URL inválida
+    </div>
+  }
+
+  @if (fg.controls['url'].hasError('required')) {
+    <div class="text-danger mt-1">
+      URL requerida
+    </div>
+  }
+
+</div>
+
+  <!-- El botón aparece únicamente si el formulario es válido -->
+  @if (fg.valid) {
+    <button type="submit" class="btn btn-primary">
+      Agregar destino
+    </button>
+  }
+
+</form>

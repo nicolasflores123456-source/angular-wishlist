@@ -1,40 +1,85 @@
-<div class="mb-3">
+<!-- Formulario para agregar destinos -->
+<app-form-destino-viaje
+  (onItemAdded)="agregar($event)">
+</app-form-destino-viaje>
 
-  <input
-    type="text"
-    class="form-control mb-2"
-    placeholder="Nombre del destino turístico"
-    #nombre
-  >
-
-  <input
-    type="text"
-    class="form-control mb-2"
-    placeholder="URL de la imagen"
-    #url
-  >
-
-  <button
-    class="btn btn-primary mt-2"
-    (click)="agregar(nombre.value, url.value)"
-  >
-    Agregar destino
-  </button>
-
-</div>
-
-<ul class="row list-unstyled">
+<!-- Lista de destinos turísticos -->
+<ul class="row list-unstyled mt-4">
 
   <li
-    *ngFor="let destino of destinos"
+    *ngFor="let destino of destinos; let i = index"
     class="col-md-4 mb-3"
   >
 
     <app-destino-viaje
       [nombre]="destino.nombre"
-      [imagenUrl]="destino.imagenUrl">
+      [votes]="destino.votes ?? 0"
+      [imagenUrl]="destino.imagenUrl"
+      [servicios]="destino.servicios"
+      [posicion]="i + 1"
+      [esFavorito]="destino.nombre === destinoFavorito"
+      (destinoSeleccionado)="seleccionarDestino($event)">
+      
     </app-destino-viaje>
+
+    <button
+      type="button"
+      class="btn btn-danger btn-sm mt-2"
+      (click)="eliminarDestino(destino.nombre)">
+      Eliminar
+    </button>
 
   </li>
 
 </ul>
+
+<hr class="my-4">
+
+<!-- Destinos seleccionados -->
+<div class="container mt-4">
+
+  <h3>Destinos seleccionados</h3>
+
+  <ul class="list-group">
+
+    <li
+      *ngFor="let nombre of destinosSeleccionados"
+      class="list-group-item">
+      {{ nombre }}
+    </li>
+    
+  <div class="text-center my-4">
+
+    <button
+      type="button"
+      class="btn btn-warning"
+      (click)="reiniciarVotos()">
+
+      Reiniciar todos los votos
+
+    </button>
+
+  </div>
+  </ul>
+
+</div>
+
+<hr class="my-4">
+
+<div class="container mt-4">
+
+  <h3>Actividad</h3>
+
+  <ul class="list-group">
+
+    <li
+      *ngFor="let update of updates"
+      class="list-group-item">
+
+      {{ update }}
+
+    </li>
+
+  </ul>
+
+</div>

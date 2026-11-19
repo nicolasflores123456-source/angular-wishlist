@@ -1,59 +1,106 @@
-# AngularWishlist
+# Angular Wishlist – Gestión de Destinos Turísticos
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.2.6.
+## Descripción
 
-## Development server
+Aplicación web de página única (SPA) desarrollada con Angular 22 y TypeScript como parte del curso Desarrollo de páginas web con Angular de Coursera.
 
-To start a local development server, run:
+El proyecto permite administrar destinos turísticos, seleccionar favoritos y realizar votaciones mediante un sistema de gestión de estado con NgRx.
+
+## Tecnologías utilizadas
+
+- Angular 22
+- TypeScript
+- HTML5 y CSS3
+- Bootstrap
+- RxJS
+- NgRx Store
+- NgRx Effects
+- Redux DevTools
+- Angular Router
+- Formularios reactivos
+
+## Funcionalidades
+
+### 1. Arquitectura basada en componentes
+La aplicación utiliza componentes independientes para presentar destinos, administrar listados y gestionar formularios.
+
+### 2. Navegación SPA
+Implementación de rutas mediante Angular Router, incluyendo redirecciones y navegación entre componentes.
+
+### 3. Formularios reactivos
+Formulario para agregar destinos turísticos con:
+
+- Validaciones obligatorias.
+- Validaciones personalizadas.
+- Validaciones parametrizables.
+- Mensajes de error.
+- Sugerencias de destinos mediante RxJS.
+
+### 4. Comunicación entre componentes
+Implementación de `@Input`, `@Output` y `EventEmitter`.
+
+### 5. Gestión de estado con NgRx
+Administración centralizada de destinos mediante:
+
+- Actions.
+- Reducers.
+- Effects.
+- Store.
+
+### 6. Sistema de votación
+Cada destino cuenta con botones para incrementar y disminuir votos.
+
+También incluye una opción para reiniciar todos los contadores a cero.
+
+### 7. Redux DevTools
+Integración con Redux DevTools para visualizar acciones y cambios del estado global.
+
+## Instalación
+
+Clonar el repositorio:
 
 ```bash
-ng serve
+git clone https://github.com/nicolasflores123456-source/angular-wishlist.git
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Entrar en el proyecto:
 
 ```bash
-ng generate component component-name
+cd angular-wishlist
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Instalar las dependencias:
 
 ```bash
-ng generate --help
+npm install
 ```
 
-## Building
-
-To build the project run:
+Ejecutar la aplicación:
 
 ```bash
-ng build
+npx ng serve -o
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+La aplicación estará disponible en el navegador mediante `http://localhost:4200`.
 
-## Running unit tests
+## Compilación
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+Para generar la versión de producción:
 
 ```bash
-ng test
+npx ng build
 ```
 
-## Running end-to-end tests
+## Evaluación académica
 
-For end-to-end (e2e) testing, run:
+Proyecto desarrollado para demostrar los conocimientos adquiridos durante el módulo 2 del curso Desarrollo de páginas web con Angular.
 
-```bash
-ng e2e
-```
+Incluye arquitectura basada en componentes, formularios reactivos, navegación SPA, comunicación entre componentes y gestión de estado mediante NgRx.
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## Autor
 
-## Additional Resources
+Nicolás Flores
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Curso
+
+Desarrollo de páginas web con Angular – Coursera.

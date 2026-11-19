@@ -1,10 +1,33 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
+import {
+  ApplicationConfig,
+  provideBrowserGlobalErrorListeners
+} from '@angular/core';
+
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
+
+import { provideStore } from '@ngrx/store';
+import { provideEffects } from '@ngrx/effects';
+import { provideStoreDevtools } from '@ngrx/store-devtools';
+
+import { destinosViajesReducer } from './models/destinos-viajes.reducer';
+import { DestinosViajesEffects } from './models/destinos-viajes.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideRouter(routes)
+
+    provideRouter(routes),
+
+    provideStore({
+      destinos: destinosViajesReducer
+    }),
+
+    provideEffects(DestinosViajesEffects),
+
+    provideStoreDevtools({
+      maxAge: 25,
+      logOnly: false
+    })
   ]
 };
