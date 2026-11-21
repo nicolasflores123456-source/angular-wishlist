@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+
+import { ReservasApiClient } from '../reservas-api-client';
 
 @Component({
   selector: 'app-reservas-listado',
@@ -9,5 +11,7 @@ import { RouterLink } from '@angular/router';
   styleUrl: './reservas-listado.css'
 })
 export class ReservasListado {
+
+  api = inject(ReservasApiClient);
 
 }
