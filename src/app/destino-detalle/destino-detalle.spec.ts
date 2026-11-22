@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideMockStore } from '@ngrx/store/testing';
+
 import { DestinoDetalle } from './destino-detalle';
 
 describe('DestinoDetalle', () => {
@@ -8,11 +10,14 @@ describe('DestinoDetalle', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [DestinoDetalle],
+      providers: [
+        provideMockStore()
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(DestinoDetalle);
     component = fixture.componentInstance;
-    await fixture.whenStable();
+    fixture.detectChanges();
   });
 
   it('should create', () => {
