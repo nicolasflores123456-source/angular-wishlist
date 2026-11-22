@@ -24,6 +24,14 @@ import {
 
 import { AppLoadService } from './app-load.service';
 
+// Configuración de traducciones
+import {
+  provideTranslateService,
+  TranslateLoader
+} from '@ngx-translate/core';
+
+import { CustomTranslationLoader } from './translation-loader';
+
 export const appConfig: ApplicationConfig = {
 
   providers: [
@@ -39,6 +47,7 @@ export const appConfig: ApplicationConfig = {
       useValue: APP_CONFIG_VALUE
     },
 
+    // Configuración de NgRx
     provideStore({
       destinos: destinosViajesReducer
     }),
@@ -50,8 +59,19 @@ export const appConfig: ApplicationConfig = {
       logOnly: false
     }),
 
+    // Inicialización de destinos
     provideAppInitializer(() => {
       return inject(AppLoadService).initializeDestinos();
+    }),
+
+    // Configuración de ngx-translate
+    provideTranslateService({
+      fallbackLang: 'es',
+      lang: 'es',
+      loader: {
+        provide: TranslateLoader,
+        useClass: CustomTranslationLoader
+      }
     })
 
   ]

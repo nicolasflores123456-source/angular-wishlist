@@ -82,6 +82,46 @@ app.post('/my', (req, res) => {
   res.json(misDestinos);
 });
 
+// Obtener traducciones según el idioma
+app.get('/translations', (req, res) => {
+
+  const lenguaje = String(req.query.lang ?? 'es')
+    .trim()
+    .toLowerCase();
+
+  const traducciones = {
+    es: {
+      HOLA: 'Hola',
+      BIENVENIDO: 'Bienvenido a Angular Wishlist'
+    },
+    en: {
+      HOLA: 'Hello',
+      BIENVENIDO: 'Welcome to Angular Wishlist'
+    },
+    fr: {
+      HOLA: 'Bonjour',
+      BIENVENIDO: 'Bienvenue sur Angular Wishlist'
+    }
+  };
+
+  if (!traducciones[lenguaje]) {
+    return res.status(400).json({
+      error: 'Idioma no disponible'
+    });
+  }
+
+  res.json(
+    Object.entries(traducciones[lenguaje]).map(
+      ([key, value]) => ({
+        lenguaje,
+        key,
+        value
+      })
+    )
+  );
+
+});
+
 // Iniciar servidor
 app.listen(PORT, () => {
   console.log(

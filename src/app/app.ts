@@ -11,6 +11,12 @@ import {
 import { Observable } from 'rxjs';
 import { Auth } from './services/auth';
 
+// Servicio de traducciones
+import {
+  TranslateService,
+  TranslatePipe
+} from '@ngx-translate/core';
+
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -18,12 +24,12 @@ import { Auth } from './services/auth';
     RouterOutlet,
     RouterLink,
     RouterLinkActive,
-    AsyncPipe
+    AsyncPipe,
+    TranslatePipe
   ],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-
 export class App {
 
   title = 'angular-wishlist';
@@ -33,6 +39,25 @@ export class App {
 
   // Servicio de navegación
   private router = inject(Router);
+
+  // Servicio de traducciones
+  translate = inject(TranslateService);
+
+  // Idioma seleccionado
+  idiomaActual = 'es';
+
+  constructor() {
+    this.translate.use(this.idiomaActual);
+  }
+
+  // Cambiar idioma
+  cambiarIdioma(event: Event): void {
+    const select = event.target as HTMLSelectElement;
+
+    this.idiomaActual = select.value;
+
+    this.translate.use(this.idiomaActual);
+  }
 
   // Cerrar sesión
   logout(): void {
