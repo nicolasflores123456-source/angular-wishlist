@@ -1,13 +1,16 @@
 import { createAction, props } from '@ngrx/store';
 import { DestinoViaje } from './destino-viaje.models';
 
-// Acción para agregar un nuevo destino
+export const inicializarDestinos = createAction(
+  '[Destinos] Inicializar Destinos',
+  props<{ destinos: DestinoViaje[] }>()
+);
+
 export const agregarDestino = createAction(
   '[Destinos] Agregar Destino',
   props<{ destino: DestinoViaje }>()
 );
 
-// Acción para seleccionar un destino favorito
 export const elegirFavorito = createAction(
   '[Destinos] Elegir Favorito',
   props<{ destino: DestinoViaje }>()

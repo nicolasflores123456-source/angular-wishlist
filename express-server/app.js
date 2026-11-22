@@ -60,13 +60,24 @@ app.get('/my', (req, res) => {
 // Guardar destinos
 app.post('/my', (req, res) => {
 
-  if (!Array.isArray(req.body)) {
+  const nuevo = req.body?.nuevo;
+
+  if (
+    !nuevo ||
+    typeof nuevo.nombre !== 'string' ||
+    typeof nuevo.imagenUrl !== 'string'
+  ) {
     return res.status(400).json({
-      error: 'Se esperaba un arreglo de destinos'
+      error: 'El destino enviado no es válido'
     });
   }
 
-  misDestinos = req.body;
+  misDestinos.push(nuevo);
+
+  console.log(
+    'Nuevo destino recibido:',
+    nuevo
+  );
 
   res.json(misDestinos);
 });

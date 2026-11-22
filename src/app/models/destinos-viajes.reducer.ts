@@ -6,6 +6,7 @@ import {
 } from './destinos-viajes-state.model';
 
 import {
+  inicializarDestinos,
   agregarDestino,
   elegirFavorito,
   eliminarDestino,
@@ -17,53 +18,74 @@ import {
 export const destinosViajesReducer = createReducer(
   initialDestinosViajesState,
 
-  // Agregar destino
-  on(agregarDestino, (state, { destino }): DestinosViajesState => ({
-    ...state,
-    items: [...state.items, destino]
-  })),
+  on(
+    inicializarDestinos,
+    (state, { destinos }): DestinosViajesState => ({
+      ...state,
+      items: destinos,
+      loading: false
+    })
+  ),
 
-  // Elegir favorito
-  on(elegirFavorito, (state, { destino }): DestinosViajesState => ({
-    ...state,
-    favorito: destino
-  })),
+  on(
+    agregarDestino,
+    (state, { destino }): DestinosViajesState => ({
+      ...state,
+      items: [...state.items, destino]
+    })
+  ),
 
-  // Eliminar destino
-  on(eliminarDestino, (state, { nombre }): DestinosViajesState => ({
-    ...state,
-    items: state.items.filter(d => d.nombre !== nombre),
-    favorito: state.favorito?.nombre === nombre
-      ? null
-      : state.favorito
-  })),
+  on(
+    elegirFavorito,
+    (state, { destino }): DestinosViajesState => ({
+      ...state,
+      favorito: destino
+    })
+  ),
 
-  // Voto positivo
-  on(voteUp, (state, { nombre }): DestinosViajesState => ({
-    ...state,
-    items: state.items.map(d =>
-      d.nombre === nombre
-        ? { ...d, votes: (d.votes ?? 0) + 1 }
-        : d
-    )
-  })),
+  on(
+    eliminarDestino,
+    (state, { nombre }): DestinosViajesState => ({
+      ...state,
+      items: state.items.filter(d => d.nombre !== nombre),
+      favorito: state.favorito?.nombre === nombre
+        ? null
+        : state.favorito
+    })
+  ),
 
-  // Voto negativo
-  on(voteDown, (state, { nombre }): DestinosViajesState => ({
-    ...state,
-    items: state.items.map(d =>
-      d.nombre === nombre
-        ? { ...d, votes: (d.votes ?? 0) - 1 }
-        : d
-    )
-  })),
+  on(
+    voteUp,
+    (state, { nombre }): DestinosViajesState => ({
+      ...state,
+      items: state.items.map(d =>
+        d.nombre === nombre
+          ? { ...d, votes: (d.votes ?? 0) + 1 }
+          : d
+      )
+    })
+  ),
 
-  // Reiniciar todos los votos a cero
-  on(resetVotes, (state): DestinosViajesState => ({
-    ...state,
-    items: state.items.map(destino => ({
-      ...destino,
-      votes: 0
-    }))
-  }))
+  on(
+    voteDown,
+    (state, { nombre }): DestinosViajesState => ({
+      ...state,
+      items: state.items.map(d =>
+        d.nombre === nombre
+          ? { ...d, votes: (d.votes ?? 0) - 1 }
+          : d
+      )
+    })
+  ),
+
+  on(
+    resetVotes,
+    (state): DestinosViajesState => ({
+      ...state,
+      items: state.items.map(destino => ({
+        ...destino,
+        votes: 0
+      }))
+    })
+  )
 );
