@@ -13,11 +13,21 @@ import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { destinosViajesReducer } from './models/destinos-viajes.reducer';
 import { DestinosViajesEffects } from './models/destinos-viajes.effects';
 
+import {
+  APP_CONFIG,
+  APP_CONFIG_VALUE
+} from './app-config';
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
 
     provideRouter(routes),
+
+    {
+      provide: APP_CONFIG,
+      useValue: APP_CONFIG_VALUE
+    },
 
     provideStore({
       destinos: destinosViajesReducer

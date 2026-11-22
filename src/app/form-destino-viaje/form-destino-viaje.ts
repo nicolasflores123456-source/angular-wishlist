@@ -1,5 +1,14 @@
-import { Component, EventEmitter, Output, AfterViewInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Output,
+  AfterViewInit,
+  OnDestroy,
+  inject
+} from '@angular/core';
+
 import { NgFor, NgIf } from '@angular/common';
+
 import {
   AbstractControl,
   FormBuilder,
@@ -9,17 +18,27 @@ import {
   ValidatorFn,
   ValidationErrors
 } from '@angular/forms';
-import { fromEvent } from 'rxjs';
-import { DestinoViaje } from '../models/destino-viaje.models';
+
+import { fromEvent, of, Subject } from 'rxjs';
+
 import {
   map,
   filter,
   debounceTime,
   distinctUntilChanged,
-  switchMap
+  switchMap,
+  catchError,
+  takeUntil
 } from 'rxjs/operators';
+
 import { ajax } from 'rxjs/ajax';
 
+import { DestinoViaje } from '../models/destino-viaje.models';
+
+import {
+  APP_CONFIG,
+  AppConfig
+} from '../app-config';
 
 @Component({
   selector: 'app-form-destino-viaje',
@@ -27,27 +46,13 @@ import { ajax } from 'rxjs/ajax';
   templateUrl: './form-destino-viaje.html',
   styleUrl: './form-destino-viaje.css'
 })
+export class FormDestinoViaje implements AfterViewInit, OnDestroy {
 
-export class FormDestinoViaje implements AfterViewInit {
+  private config = inject<AppConfig>(APP_CONFIG);
+
+  private destroy$ = new Subject<void>();
+
   searchResults: string[] = [];
-
-  readonly destinosDisponibles: string[] = [
-  'Barcelona',
-  'Barranquilla',
-  'Buenos Aires',
-  'Madrid',
-  'Lima',
-  'Londres',
-  'Los Ángeles',
-  'París',
-  'Roma',
-  'Bogotá',
-  'Cartagena',
-  'Medellín',
-  'Tegucigalpa',
-  'San Pedro Sula',
-  'Roatán'
-];
 
   @Output() onItemAdded = new EventEmitter<DestinoViaje>();
 
@@ -55,10 +60,15 @@ export class FormDestinoViaje implements AfterViewInit {
 
   minLongitud = 3;
 
-  // Primer validador: mínimo 5 caracteres
-  nombreValidator(control: AbstractControl): ValidationErrors | null {
+  // Validador: mínimo 5 caracteres
+  nombreValidator(
+    control: AbstractControl
+  ): ValidationErrors | null {
 
-    const longitud = (control.value ?? '').toString().trim().length;
+    const longitud = (control.value ?? '')
+      .toString()
+      .trim()
+      .length;
 
     if (longitud > 0 && longitud < 5) {
       return { invalidNombre: true };
@@ -67,12 +77,19 @@ export class FormDestinoViaje implements AfterViewInit {
     return null;
   }
 
-  // Segundo validador: longitud mínima configurable
-  nombreValidatorParametrizable(minLong: number): ValidatorFn {
+  // Validador parametrizable
+  nombreValidatorParametrizable(
+    minLong: number
+  ): ValidatorFn {
 
-    return (control: AbstractControl): ValidationErrors | null => {
+    return (
+      control: AbstractControl
+    ): ValidationErrors | null => {
 
-      const longitud = (control.value ?? '').toString().trim().length;
+      const longitud = (control.value ?? '')
+        .toString()
+        .trim()
+        .length;
 
       if (longitud > 0 && longitud < minLong) {
         return { minLongNombre: true };
@@ -88,56 +105,82 @@ export class FormDestinoViaje implements AfterViewInit {
       nombre: ['', Validators.compose([
         Validators.required,
         this.nombreValidator,
-        this.nombreValidatorParametrizable(this.minLongitud)
+        this.nombreValidatorParametrizable(
+          this.minLongitud
+        )
       ])],
+
       url: ['', Validators.required]
     });
 
-    this.fg.valueChanges.subscribe(valor => {
-      console.log('Cambios en el formulario:', valor);
-    });
+    this.fg.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(valor => {
+        console.log(
+          'Cambios en el formulario:',
+          valor
+        );
+      });
   }
 
-ngAfterViewInit(): void {
+  ngAfterViewInit(): void {
 
-  const elemNombre = document.getElementById('nombre') as HTMLInputElement;
+    const elemNombre = document.getElementById(
+      'nombre'
+    ) as HTMLInputElement;
 
-  if (elemNombre) {
+    if (!elemNombre) {
+      return;
+    }
 
     fromEvent<InputEvent>(elemNombre, 'input')
       .pipe(
 
-        map(event => (event.target as HTMLInputElement).value),
+        map(event =>
+          (event.target as HTMLInputElement).value.trim()
+        ),
 
         debounceTime(200),
 
         distinctUntilChanged(),
 
-        map(texto => {
+        switchMap(texto => {
 
-          if (texto.trim().length < 4) {
-            return [];
+          if (texto.length < 3) {
+            return of([]);
           }
 
-          return this.destinosDisponibles.filter(destino =>
-            destino.toLowerCase().includes(texto.trim().toLowerCase())
-          );
+          const url =
+            `${this.config.apiEndpoint}/ciudades?q=${
+              encodeURIComponent(texto)
+            }`;
 
-        })
+          return ajax.getJSON<string[]>(url)
+            .pipe(
+              catchError(error => {
+                console.error(
+                  'Error al consultar ciudades:',
+                  error
+                );
+
+                return of([]);
+              })
+            );
+        }),
+
+        takeUntil(this.destroy$)
 
       )
       .subscribe(resultados => {
 
         this.searchResults = resultados;
 
-        console.log('Sugerencias encontradas:', resultados);
-
+        console.log(
+          'Sugerencias desde Express:',
+          resultados
+        );
       });
-
   }
-
-}
-
 
   guardar(): void {
 
@@ -146,11 +189,21 @@ ngAfterViewInit(): void {
 
     if (this.fg.valid && nombre.trim() !== '') {
 
-      const destino = new DestinoViaje(nombre.trim(), url.trim());
+      const destino = new DestinoViaje(
+        nombre.trim(),
+        url.trim()
+      );
 
       this.onItemAdded.emit(destino);
 
       this.fg.reset();
+
+      this.searchResults = [];
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

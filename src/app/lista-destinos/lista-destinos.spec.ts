@@ -1,8 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+
 import { provideMockStore } from '@ngrx/store/testing';
+
 import { provideRouter } from '@angular/router';
 
 import { ListaDestinos } from './lista-destinos';
+
+import {
+  APP_CONFIG,
+  APP_CONFIG_VALUE
+} from '../app-config';
 
 describe('ListaDestinos', () => {
 
@@ -16,7 +23,13 @@ describe('ListaDestinos', () => {
       imports: [ListaDestinos],
 
       providers: [
+
         provideRouter([]),
+
+        {
+          provide: APP_CONFIG,
+          useValue: APP_CONFIG_VALUE
+        },
 
         provideMockStore({
           initialState: {
@@ -32,6 +45,7 @@ describe('ListaDestinos', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(ListaDestinos);
+
     component = fixture.componentInstance;
 
     await fixture.whenStable();

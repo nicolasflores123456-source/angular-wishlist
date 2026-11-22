@@ -9,33 +9,57 @@ app.use(cors({
   origin: 'http://localhost:4200'
 }));
 
-// Permitir recibir datos JSON
 app.use(express.json());
 
-// Datos de ejemplo
-const urls = [
+// Ciudades disponibles
+const ciudades = [
+  'Barcelona',
+  'Barranquilla',
   'Buenos Aires',
   'Madrid',
+  'Lima',
+  'Londres',
+  'Los Ángeles',
   'París',
   'Roma',
-  'Londres'
+  'Bogotá',
+  'Cartagena',
+  'Medellín',
+  'Tegucigalpa',
+  'San Pedro Sula',
+  'Roatán'
 ];
 
-// Almacenamiento temporal en memoria
-let misDestinos = [];
-
-// GET: obtener destinos disponibles
+// Mantener la ruta anterior
 app.get('/url', (req, res) => {
-  res.json(urls);
+  res.json(ciudades);
 });
 
-// GET: obtener mis destinos
+// Nueva ruta para buscar ciudades
+app.get('/ciudades', (req, res) => {
+
+  const consulta = String(req.query.q ?? '')
+    .trim()
+    .toLowerCase();
+
+  const resultados = ciudades.filter(ciudad =>
+    ciudad.toLowerCase().includes(consulta)
+  );
+
+  res.json(resultados);
+});
+
+// Almacenamiento temporal
+let misDestinos = [];
+
+// Obtener destinos guardados
 app.get('/my', (req, res) => {
   res.json(misDestinos);
 });
 
-// POST: guardar mis destinos
+// Guardar destinos
 app.post('/my', (req, res) => {
+
   if (!Array.isArray(req.body)) {
     return res.status(400).json({
       error: 'Se esperaba un arreglo de destinos'
@@ -49,5 +73,7 @@ app.post('/my', (req, res) => {
 
 // Iniciar servidor
 app.listen(PORT, () => {
-  console.log(`Servidor Express funcionando en el puerto ${PORT}`);
+  console.log(
+    `Servidor Express funcionando en el puerto ${PORT}`
+  );
 });

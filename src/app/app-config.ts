@@ -5,7 +5,7 @@ export interface AppConfig {
 }
 
 export const APP_CONFIG_VALUE: AppConfig = {
-  apiEndpoint: 'https://mi-api.com'
+  apiEndpoint: 'http://localhost:3000'
 };
 
 export const APP_CONFIG = new InjectionToken<AppConfig>(
